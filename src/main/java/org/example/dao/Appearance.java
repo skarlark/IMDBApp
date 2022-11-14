@@ -1,23 +1,25 @@
 package org.example.dao;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "appearance")
 public class Appearance {
 
     private String appearanceId;
-    private String nConst;
-    private String tConst;
+    private String nconst_f;
+    private String tconst_f;
     private String characters;
+    private Movie movieLite;
 
-    public Appearance(String appearanceId, String nConst, String tConst, String characters) {
+    public Appearance(String appearanceId, String nconst_f, String tconst_f, String characters) {
         this.appearanceId = appearanceId;
-        this.nConst = nConst;
-        this.tConst = tConst;
+        this.nconst_f = nconst_f;
+        this.tconst_f = tconst_f;
         this.characters = characters;
     }
 
@@ -37,22 +39,6 @@ public class Appearance {
     }
 
 
-    public String getnConst() {
-        return nConst;
-    }
-
-    public void setnConst(String nConst) {
-        this.nConst = nConst;
-    }
-
-    public String gettConst() {
-        return tConst;
-    }
-
-    public void settConst(String tConst) {
-        this.tConst = tConst;
-    }
-
     public String getCharacters() {
         return characters;
     }
@@ -61,5 +47,32 @@ public class Appearance {
         this.characters = characters;
     }
 
+    public String getNconst_f() {
+        return nconst_f;
+    }
+
+    public void setNconst_f(String nconst_f) {
+        this.nconst_f = nconst_f;
+    }
+
+    public String getTconst_f() {
+        return tconst_f;
+    }
+
+    public void setTconst_f(String tconst_f) {
+        this.tconst_f = tconst_f;
+    }
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "nconst_f", updatable = false, insertable = false)
+    public Movie getMovieLite() {
+        return movieLite;
+    }
+
+    public void setMovieLite(Movie movieLite) {
+        this.movieLite = movieLite;
+    }
 
 }

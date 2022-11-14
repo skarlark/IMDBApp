@@ -1,8 +1,6 @@
 package org.example.dao;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "actor")
@@ -56,4 +54,5 @@ public class Actor {
     public void setDeathYear(int deathYear) {
         this.deathYear = deathYear;
     }
+
 }

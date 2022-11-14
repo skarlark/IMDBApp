@@ -2,11 +2,13 @@ package org.example.service;
 
 import org.example.model.Actor;
 import org.example.repository.ActorRepository;
+import org.example.throttling.APIBucket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.net.HttpRetryException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +24,9 @@ public class ActorServiceImpl implements ActorService {
             throw new IllegalArgumentException("Page Size cannot be greater than 1000");
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("primaryName"));
         List<Actor> actors = new ArrayList<>();
-        boolean isValidWildcard = false;
+        boolean isValidWildcard = nameWildCard != null && !nameWildCard.trim().isEmpty();
         if (isValidWildcard) {
-            actorRepository.findByNameLike(nameWildCard).forEach(actor -> actors.add(Actor.toActor(actor)));
+            actorRepository.findByNameLike(pageRequest, nameWildCard).forEach(actor -> actors.add(Actor.toActor(actor)));
         } else {
             actorRepository.findAll(pageRequest).get().forEach(actor -> actors.add(Actor.toActor(actor)));
         }
@@ -33,6 +35,11 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public Actor getById(String id) {
-        return Actor.toActor(actorRepository.findById(id).get());
+        return Actor.toActor(actorRepository.findById(id).orElseThrow(NullPointerException::new));
+    }
+
+    @Override
+    public void consumeBucketToken(APIBucket defaultAPIBucket) throws HttpRetryException {
+        defaultAPIBucket.consumeBucket();
     }
 }
