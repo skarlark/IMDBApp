@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.HttpRetryException;
 import java.util.List;
 
-@CrossOrigin
 @RestController
+@CrossOrigin
 public class APIController {
 
     @Autowired

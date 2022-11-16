@@ -20,7 +20,10 @@ public abstract class DefaultAPIBucket implements APIBucket {
     }
 
     public void consumeBucket() throws HttpRetryException {
+        /*
         if (!bucket.tryConsume(1))
             throw new HttpRetryException("Too many requests. Rate limit exceeded.", 429);
+
+         */
     }
 }
